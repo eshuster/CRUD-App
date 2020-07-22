@@ -17,7 +17,7 @@ class Program(BaseInfo):
         MINDFUL_COMMUNICATION = 'Mindful Communication'
 
     category = models.CharField(
-        max_length=5,
+        max_length=50,
         choices = CategoryChoices.choices,
         default=CategoryChoices.LEADERSHIP_DEVELOPMENT
     )
@@ -27,8 +27,17 @@ class Section(BaseInfo):
     order_index = models.IntegerField(blank=True, null=True) # Sections of the same program have unique order_indexes
 
 class Activity(BaseInfo):
+    class TypeChoices(models.TextChoices):
+        CONTENT = 'Content'
+        QUESTION_ANSWERS = 'Question/Answers'
+
     section = models.ForeignKey(Section, on_delete=models.CASCADE, blank=True, null=True)
-    content = models
+    type = models.CharField(
+        max_length=20,
+        choices = TypeChoices.choices,
+        default=TypeChoices.CONTENT
+    )
+    content = models.TextField(max_length=500, blank=True, null=True) # Is not None when type is TypeChoices.CONTENT
 
 class Question(models.Model):
     text = models.CharField(max_length=50)
