@@ -13,8 +13,13 @@ urlpatterns = [
     url(r'^activity/<int:pk>/$', ActivityController.as_view()),
     url(r'^answer/$', AnswerListController.as_view()),
     url(r'^answer/<int:pk>/$', AnswerController.as_view()),
+    url(r'^<int:section_id>/contentheader/$', AnswerListController.as_view()),
+    url(r'^<int:section_id>/contentheader/<int:pk>/$', AnswerController.as_view()),
+    url(r'^<int:section_id>/contentitem/$', AnswerListController.as_view()),
+    url(r'^<int:section_id>/contentitem/<int:pk>/$', AnswerController.as_view()),
     url(r'^question/$', QuestionListController.as_view()),
     url(r'^question/<int:pk>/$', QuestionController.as_view()),
     url(r'^section/$', SectionListController.as_view()),
     url(r'^section/<int:pk>/$', SectionController.as_view()),
 ]
+

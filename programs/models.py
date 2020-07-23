@@ -37,9 +37,9 @@ class Activity(BaseInfo):
         choices = TypeChoices.choices,
         default=TypeChoices.CONTENT
     )
-    content = models.TextField(max_length=500, blank=True, null=True) # Is not None when type is TypeChoices.CONTENT
 
 class Question(models.Model):
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -47,6 +47,19 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+class ContentHeader(models.Model):
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, blank=True, null=True)
+    text = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+class ContentItem(models.Model):
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, blank=True, null=True)
+    text = models.CharField(max_length=50)
+    order_index = models.IntegerField(blank=True, null=True) # ContentItems of the same ContentHeader have unique order_indexes
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
