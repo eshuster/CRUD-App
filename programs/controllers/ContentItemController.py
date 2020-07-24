@@ -17,7 +17,7 @@ class ContentItemController(APIView):
     def put(self, request, pk):
         try:
             content_header = ContentItem.objects.get(id=pk)
-            serializer = ContentItemSerializer(content_header)
+            serializer = ContentItemSerializer(content_header, data=request.data, partial=True)
 
             if serializer.is_valid():
                 serializer.save()

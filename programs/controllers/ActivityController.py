@@ -17,7 +17,7 @@ class ActivityController(APIView):
     def put(self, request, pk):
         try:
             activity = Activity.objects.get(id=pk)
-            serializer = ActivitySerializer(activity, data=request.data)
+            serializer = ActivitySerializer(activity, data=request.data, partial=True)
 
             if serializer.is_valid():
                 serializer.save()

@@ -5,7 +5,7 @@ from ..serializers.ProgramSerializers import ProgramSerializer
 from shared.responses import Responses as response
 
 class ProgramController(APIView):
-    def get(self, request, pk):
+    def get(self, request, pk, format=None):
         try:
             program = Program.objects.get(id=pk)
             serializer = ProgramSerializer(program)
@@ -17,7 +17,7 @@ class ProgramController(APIView):
     def put(self, request, pk):
         try:
             program = Program.objects.get(id=pk)
-            serializer = ProgramSerializer(program)
+            serializer = ProgramSerializer(program, data=request.data, partial=True)
 
             if serializer.is_valid():
                 serializer.save()

@@ -17,7 +17,7 @@ class ContentHeaderController(APIView):
     def put(self, request, pk):
         try:
             content_header = ContentHeader.objects.get(id=pk)
-            serializer = ContentHeaderSerializer(content_header)
+            serializer = ContentHeaderSerializer(content_header, data=request.data, partial=True)
 
             if serializer.is_valid():
                 serializer.save()
