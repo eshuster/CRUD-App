@@ -20,7 +20,7 @@ class ProgramTests(APITestCase):
     def test_get_program(self):
         res = self.client.get('/program/{}/'.format(self.program_1.id))
 
-        program_1 = Program.objects.get(id=self.program_1.id)
+        program_1 = Program.objects.get(id=res.data['id'])
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(program_1.id, self.program_1.id)
@@ -32,7 +32,7 @@ class ProgramTests(APITestCase):
                                                     "description": "Part Three"
                                                   }, format='json')
 
-        newly_created_program = Program.objects.get(name="Part Three",
+        newly_created_program = Program.objects.get(name="Mindful Communication",
                                                     category=Program.CategoryChoices.MINDFUL_COMMUNICATION)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)

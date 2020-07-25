@@ -2,7 +2,6 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 
 from ..models import Program, Section
-from ..serializers.ProgramSerializers import ProgramSerializer
 
 class SectionTests(APITestCase):
     def setUp(self):
@@ -21,24 +20,24 @@ class SectionTests(APITestCase):
                                                 program=self.program_1, order_index=2)
 
     def test_get_section(self):
-        res = self.client.get('/section/{}/'.format(self.section_1.id))
+        res = self.client.get('/program/section/{}/'.format(self.section_1.id))
 
-        section_1 = Section.objects.get(id=self.section_1.id)
+        section_1 = Section.objects.get(id=res.data['id'])
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(section_1.id, self.section_1.id)
 
     def test_get_section_by_program_id(self):
-        res = self.client.get('/section/{}/'.format(self.section_1.id))
+        res = self.client.get('/program/section/{}/'.format(self.section_1.id))
 
-        section_1 = Section.objects.get(program_id=self.section_1.program.id)
+        sections = Section.objects.filter(program_id=self.section_1.program.id)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(section_1.id, self.section_1.id)
+        self.assertEqual(len(sections), 2)
 
     def test_create_section(self):
         res = self.client.post('/program/section/', data={
-                                                    "name": "aaa",
+                                                    "name": "Action",
                                                     "description": "Mindful Communication",
                                                     "program": self.program_1.id,
                                                     "order_index": 3

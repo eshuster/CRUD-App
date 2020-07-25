@@ -5,7 +5,7 @@ from ..serializers.ActivitySerializers import ActivitySerializer
 from shared.responses import Responses as response
 
 class ActivityController(APIView):
-    def get(self, request, pk):
+    def get(self, request, pk, section_id=None):
         try:
             activity = Activity.objects.get(id=pk)
             serializer = ActivitySerializer(activity)
@@ -37,6 +37,15 @@ class ActivityController(APIView):
             return response.status_404(data="Activity not found.")
 
 class ActivityListController(APIView):
+    def get(self, request, section_id):
+        try:
+            activities = Activity.objects.filter(section_id=section_id)
+            serializer = ActivitySerializer(activities, many=True)
+
+            return response.status_200(data=serializer.data)
+        except:
+            return response.status_404(data="Activities not found.")
+
     def post(self, request):
         serializer = ActivitySerializer(data=request.data)
 

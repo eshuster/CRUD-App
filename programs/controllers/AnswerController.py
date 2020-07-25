@@ -17,7 +17,7 @@ class AnswerController(APIView):
     def put(self, request, pk):
         try:
             answer = Answer.objects.get(id=pk)
-            serializer = AnswerSerializer(answer)
+            serializer = AnswerSerializer(answer, data=request.data, partial=True)
 
             if serializer.is_valid():
                 serializer.save()

@@ -5,18 +5,18 @@ from ..serializers.ContentSerializers import ContentItemSerializer
 from shared.responses import Responses as response
 
 class ContentItemController(APIView):
-    def get(self, request, pk):
+    def get(self, request, activity_id, pk):
         try:
-            content_header = ContentItem.objects.get(id=pk)
+            content_header = ContentItem.objects.get(id=pk, content_header__activity_id=activity_id)
             serializer = ContentItemSerializer(content_header)
 
             return response.status_200(data=serializer.data)
         except:
             return response.status_404(data="ContentItem not found.")
 
-    def put(self, request, pk):
+    def put(self, request, activity_id, pk):
         try:
-            content_header = ContentItem.objects.get(id=pk)
+            content_header = ContentItem.objects.get(id=pk, content_header__activity_id=activity_id)
             serializer = ContentItemSerializer(content_header, data=request.data, partial=True)
 
             if serializer.is_valid():
@@ -27,16 +27,16 @@ class ContentItemController(APIView):
         except:
             return response.status_404(data="ContentHeader not found.")
 
-    def delete(self, request, pk):
+    def delete(self, request, activity_id, pk):
         try:
-            content_header = ContentItem.objects.get(id=pk)
+            content_header = ContentItem.objects.get(id=pk, content_header__activity_id=activity_id)
             content_header.delete()
 
             return response.status_200(data="Successfully deleted.")
         except:
             return response.status_404(data="ContentItem not found.")
 
-class ContentHeaderListController(APIView):
+class ContentItemListController(APIView):
     def post(self, request):
         serializer = ContentItemSerializer(data=request.data)
 

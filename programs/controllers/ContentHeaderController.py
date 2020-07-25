@@ -5,18 +5,18 @@ from ..serializers.ContentSerializers import ContentHeaderSerializer, ContentIte
 from shared.responses import Responses as response
 
 class ContentHeaderController(APIView):
-    def get(self, request, pk):
+    def get(self, request, activity_id, pk):
         try:
-            content_header = ContentHeader.objects.get(id=pk)
+            content_header = ContentHeader.objects.get(id=pk, activity_id=activity_id)
             serializer = ContentHeaderSerializer(content_header)
 
             return response.status_200(data=serializer.data)
         except:
             return response.status_404(data="ContentHeader not found.")
 
-    def put(self, request, pk):
+    def put(self, request, activity_id, pk):
         try:
-            content_header = ContentHeader.objects.get(id=pk)
+            content_header = ContentHeader.objects.get(id=pk, activity_id=activity_id)
             serializer = ContentHeaderSerializer(content_header, data=request.data, partial=True)
 
             if serializer.is_valid():
@@ -27,7 +27,7 @@ class ContentHeaderController(APIView):
         except:
             return response.status_404(data="ContentHeader not found.")
 
-    def delete(self, request, pk):
+    def delete(self, request, activity_id, pk):
         try:
             content_header = ContentHeader.objects.get(id=pk)
             content_header.delete()
