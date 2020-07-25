@@ -23,11 +23,14 @@ class ContentItemTests(APITestCase):
                                                              activity=self.activity_1)
 
         self.content_item_1 = ContentItem.objects.create(text="A",
-                                                             content_header=self.content_header_1)
+                                                         content_header=self.content_header_1,
+                                                         order_index=1)
         self.content_item_2 = ContentItem.objects.create(text="B",
-                                                             content_header=self.content_header_1)
+                                                         content_header=self.content_header_1,
+                                                         order_index=2)
         self.content_item_3 = ContentItem.objects.create(text="C?",
-                                                             content_header=self.content_header_1)
+                                                         content_header=self.content_header_1,
+                                                         order_index=3)
 
     def test_get_content_item(self):
         res = self.client.get('/program/{}/contentitem/{}/'.format(self.activity_1.id, self.content_header_1.id))
@@ -40,7 +43,8 @@ class ContentItemTests(APITestCase):
     def test_create_content_item(self):
         res = self.client.post('/program/contentitem/', data={
             "text": "D?",
-            "content_header": self.content_header_1.id
+            "content_header": self.content_header_1.id,
+            "order_index": 4
         }, format="json")
 
         newly_created_content_item = ContentItem.objects.get(text="D?",
