@@ -1,8 +1,7 @@
 from django.db import models
 
 class BaseInfo(models.Model):
-    name = models.CharField(max_length=100)
-    # name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -30,7 +29,7 @@ class Section(BaseInfo):
 
 class Activity(BaseInfo):
     class TypeChoices(models.TextChoices):
-        CONTENT = 'Content'
+        CONTENT = 'HTML_Content'
         QUESTION_ANSWERS = 'Question/Answers'
 
     section = models.ForeignKey(Section, on_delete=models.CASCADE, blank=True, null=True)
@@ -40,31 +39,15 @@ class Activity(BaseInfo):
         default=TypeChoices.CONTENT
     )
 
-class Question(models.Model):
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, blank=True, null=True)
-    text = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
-class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=True, null=True)
-    text = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
-class ContentHeader(models.Model):
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+class Content(models.Model):
+    activity = models.OneToOneField(Activity, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
 class ContentItem(models.Model):
-    content_header = models.ForeignKey(ContentHeader, on_delete=models.CASCADE)
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, blank=True, null=True)
     text = models.CharField(max_length=50)
-    order_index = models.IntegerField(blank=True, null=True) # ContentItems of the same ContentHeader have unique order_indexes
+    order_index = models.IntegerField(blank=True, null=True) # ContentItems of the same Content have unique order_indexes
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-
-
-
-

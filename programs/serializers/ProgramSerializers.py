@@ -1,8 +1,6 @@
 from rest_framework import serializers
 
-from django.core.exceptions import ValidationError
-
-from ..models import Program, Section, Activity, Question, Answer
+from ..models import Program
 
 class ProgramSerializer(serializers.ModelSerializer):
     class Meta:

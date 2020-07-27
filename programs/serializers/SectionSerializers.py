@@ -3,7 +3,6 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 
 from ..models import Section, Program
-from ..serializers.ProgramSerializers import ProgramSerializer
 
 class SectionRequestSerializer(serializers.ModelSerializer):
     program = serializers.PrimaryKeyRelatedField(queryset=Program.objects.all())
@@ -13,8 +12,7 @@ class SectionRequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_order_index(self, value):
-        program = Program.objects.get(id=self.initial_data['program'])
-        latest_section = Section.objects.filter(program_id=program.id).last()
+        latest_section = Section.objects.filter(program_id=self.initial_data['program']).last()
 
         if value <= latest_section.order_index:
             raise ValidationError("Order Index must be unique per Program. "
