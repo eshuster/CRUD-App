@@ -16,5 +16,5 @@ There were definitely some questions regarding how to design out the models but 
 
 The assignment mentioned an Activity has either a Q/A or HTML content. Instead of saving a lot of HTML as text into the DB, I implemented the Content and ContentItem class. In the case when Activity is an HTML conent, the Content table represents a header and ContentItem represents a list item. When the front end queries the DB for a specific Activity's Content and receives back a Content and a list of ContentItems, it will ideally construct the page by creating a header tag like "h1" for Content and "li" for ContentItem. 
 
-When Content is Q/A, the front end should treat the data in a similarly but different in the way it constructs a question heading based on the Content and the question/answers based on ContentItems.
+When Content is Q/A, the front end should treat the data similarly in the way it constructs a question heading based on the Content and the question/answers based on ContentItems.
 

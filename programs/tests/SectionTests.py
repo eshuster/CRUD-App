@@ -61,7 +61,7 @@ class SectionTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Section.objects.count(), 2)
 
-    def test_update_program(self):
+    def test_update_section(self):
         res = self.client.put('/program/section/{}/'.format(self.section_1.id), data={
                                                 "description": "New section description",
                                                 "program" : self.program_1.id,
