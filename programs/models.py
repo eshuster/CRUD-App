@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 class BaseInfo(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -26,6 +27,19 @@ class Section(BaseInfo):
     program = models.ForeignKey(Program, on_delete=models.CASCADE, blank=True, null=True)
     order_index = models.IntegerField(blank=True, null=True) # Sections of the same program have unique order_indexes
     image_address = models.TextField(blank=True, null=True) # Location to image stored on S3 Bucket
+
+    def clean(self, *args, **kwargs):
+        # meant for when object is created directly through admin
+        latest_section = Section.objects.filter(program_id=self.program).last()
+
+        if latest_section is not None:
+            if self.order_index <= latest_section.order_index:
+                raise ValidationError("Order Index must be unique per Program. "
+                                      "Enter a number greater than {}".format(latest_section.order_index))
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # calls self.clean() as well cleans other fields
+        return super(Section, self).save(*args, **kwargs)
 
 class Activity(BaseInfo):
     class TypeChoices(models.TextChoices):

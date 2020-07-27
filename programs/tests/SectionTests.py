@@ -63,7 +63,9 @@ class SectionTests(APITestCase):
 
     def test_update_program(self):
         res = self.client.put('/program/section/{}/'.format(self.section_1.id), data={
-                                                "description": "New section description"
+                                                "description": "New section description",
+                                                "program" : self.program_1.id,
+                                                "order_index": 3
                                                 }, format='json')
 
         updated_section = Section.objects.get(id=self.section_1.id)
